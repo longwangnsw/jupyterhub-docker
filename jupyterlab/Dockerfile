@@ -1,6 +1,6 @@
-FROM jupyter/scipy-notebook:137a295ff71b
+FROM jupyter/scipy-notebook:9e8682c9ea54
 
-LABEL maintainer="Luca De Feo <https://defeo.lu/>"
+LABEL maintainer="David"
 
 USER root
 
@@ -59,9 +59,9 @@ RUN pip install \
     fix-permissions $CONDA_DIR
 
 # Fix SageMath kernel
-USER root
-RUN sed -i 's/"\/usr\/bin\/sage"/"env", "PATH=\/usr\/local\/sbin:\/usr\/local\/bin:\/usr\/sbin:\/usr\/bin:\/sbin:\/bin", "\/usr\/bin\/sage"/' /usr/share/jupyter/kernels/sagemath/kernel.json
-USER $NB_UID
+#USER root
+#RUN sed -i 's/"\/usr\/bin\/sage"/"env", "PATH=\/usr\/local\/sbin:\/usr\/local\/bin:\/usr\/sbin:\/usr\/bin:\/sbin:\/bin", "\/usr\/bin\/sage"/' /usr/share/jupyter/kernels/sagemath/kernel.json
+#USER $NB_UID
 
 # Add conda env hook
 COPY ./conda-activate.sh /usr/local/bin/before-notebook.d/

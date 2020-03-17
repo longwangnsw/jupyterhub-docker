@@ -11,13 +11,27 @@ defaultEntryPoints = ["https","http"]
   [entryPoints.https]
   address = ":443"
     [entryPoints.https.tls]
-      [[entryPoints.https.tls.certificates]]
-      certFile = "/etc/certs/jupyter_ens_uvsq_fr.crt"
-      keyFile = "/etc/certs/jupyter.ens.uvsq.fr.key"
+#      [[entryPoints.https.tls.certificates]]
+#      certFile = "/etc/certs/jupyter_ens_uvsq_fr.crt"
+#      keyFile = "/etc/certs/jupyter.ens.uvsq.fr.key"
+
+[retry]
 
 [docker]
-domain = "docker.local"
-watch = true
+  domain = "jupyterhub.mycbatest.club"
+  watch = true
+
+[acme]
+  email = "wanglong8928@gmail.com"
+  storage = "acme.json"
+  entryPoint = "https"
+#  onHostRule = true
+[[acme.domains]]
+   main = "mycbatest.club"
+   sans = ["jupyterhub.mycbatest.club","www.mycbatest.club"]
+
+[acme.httpChallenge]
+  entryPoint = "http"
 
 [api]
   [api.statistics]

@@ -5,9 +5,11 @@ services:
     build: jupyterhub
     image: jupyterhub_img
     container_name: jupyterhub
+    ports:
+      - "8000:8000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - jupyterhub_data:/srv/jupyterhub
+      - jupyterhub_data_new:/srv/jupyterhub
     environment:
       - DOCKER_JUPYTER_CONTAINER=jupyterlab_img
       - DOCKER_NETWORK_NAME=${COMPOSE_PROJECT_NAME}_default
@@ -22,21 +24,25 @@ services:
     build: jupyterlab
     image: jupyterlab_img
     container_name: jupyterlab-throaway
-    network_mode: none
-    command: echo
+    ports:
+      - "8888:8888"
+#    network_mode: none
+#    command: echo
 
   reverse-proxy:
-    image: traefik
+    image: traefik:v1.7
     container_name: reverse-proxy
+#    domainname: jupyterhub.mycbatest.club
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
     volumes:
       - ./reverse-proxy/traefik.toml:/etc/traefik/traefik.toml
-      - /etc/certs:/etc/certs
+#      - /etc/certs:/etc/certs
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./reverse-proxy/acme.json:/acme.json
     restart: on-failure
 
 volumes:
-  jupyterhub_data:
+  jupyterhub_data_new:
